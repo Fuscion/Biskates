@@ -7,5 +7,5 @@ MySQL
 HTML
 CSS
 
-# Objetivo
-Plataforma que visa facilitar a busca e o contacto entre Fornecedores de serviços (biscates) e clientes
+# Objetive
+Platform for search and contact between Service Suppliers (Biscates) and clients
