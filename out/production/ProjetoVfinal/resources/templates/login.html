@@ -1,0 +1,224 @@
+
+<!doctype html>
+<html lang="pt">
+<head>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script src="/styles/autocomplete.js"></script>
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+	crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/styles/styleNovo.css">
+<link rel="stylesheet" href="/styles/concelho.css">
+<title>Welcome</title>
+</head>
+<body>
+
+	<div class="container">
+
+
+
+		<div class="col-sm-9 col-md-7 col-lg-4 mx-auto">
+			<ul class="nav nav-tabs nav-bar" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link <#if userAlreadyExists??> <#else> active </#if>" id="login-tab" data-bs-toggle="tab"
+						data-bs-target="#login" type="button" role="tab"
+						aria-controls="login" aria-selected="true">Log in</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link <#if userAlreadyExists??> active </#if>" id="signup-tab" data-bs-toggle="tab"
+						data-bs-target="#signup" type="button" role="tab"
+						aria-controls="signup" aria-selected="true">Sign up</button>
+				</li>
+
+			</ul>
+			<div class="tab-content" id="myTabContent">
+			
+				<div class="tab-pane <#if userAlreadyExists??> <#else> fade show active </#if> " id="login" role="tabpanel"
+					aria-labelledby="login-tab">
+				
+					<div class="card card-signin my-0 shadow">
+						<img class="card-img-top"
+							src="/images/logo.png"
+							alt="Biskates">
+						<div class="card-body">
+							<form method="post" action="/login/" class="form-signin">
+								<div class="form-label-group">
+									<input type="email" name="username" id="inputEmail"
+										class="form-control" placeholder="Email address" required
+										autofocus> <label for="inputEmail">Email</label>
+
+									<#if login_error?exists>
+									<p style='color: red'>Utilizador Inexistente</p>
+
+									</#if>
+								</div>
+
+								<div class="form-label-group">
+									<input type="password" name="password" id="inputPassword"
+										class="form-control" placeholder="Password" required>
+									<label for="inputPassword">Password</label>
+								</div>
+
+
+
+
+								<button type="submit" class="btn btn-dark btn-primary "
+									value="Login">Sign in</button>
+
+							</form>
+
+
+						</div>
+
+
+						<div class="card-footer text-muted text-size ">
+							<small class="text-muted"> <i> © 2021 Biskates -
+									Todos os direitos reservados</i>
+							</small>
+						</div>
+
+					</div>
+				</div>
+				
+				<div class="tab-pane fade  <#if userAlreadyExists??> fade show active </#if>" id="signup" role="tabpanel"
+					aria-labelledby="signup-tab">
+					
+					<div class="card card-signin my-0 shadow">
+
+						<div class="card-body">
+
+							<form method="post" action="/signUp/" class="form-signin">
+
+								<div class="row" style="margin: 20px;">
+									<p>Selecione uma foto de perfil: </p>
+									<div class="col-sm">
+										<div class="checkboxgroup">
+											<label for="male">
+												<img src="/images/male.png" alt="" width= " 95px" style=" border-radius: 50%" />
+
+											</label>
+											<input type="radio" id="male" name="avatar"  class="input-hidden" value ="1" />
+										</div>
+										<div class="checkboxgroup">
+											<label for="female"> <img src="/images/female.png" alt="" width= " 95px" style=" border-radius: 50%" />
+
+											</label>
+											<input type="radio" name="avatar" id="female" value ="2" class="input-hidden" />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-label-group">
+									<input type="text" id="primeiroNome" name="firstName"
+										class="form-control" placeholder="First Name" required
+										autofocus> <label for="primeiroNome">Primeiro
+										Nome</label>
+								</div>
+
+								<div class="form-label-group">
+									<input type="text" id="ultimoNome" name="lastName"
+										class="form-control" placeholder="Last Name" required>
+									<label for="ultimoNome">Ultimo Nome</label>
+								</div>
+
+
+								<div class="form-label-group">
+									<input type="email" id="email" name="email"
+										class="form-control" placeholder="Email address" required>
+									<label for="email">Email</label>
+								</div>
+
+								<div class="form-label-group">
+									<input type="password" id="password" name="password"
+										class="form-control" placeholder="Password" required>
+									<label for="password">Password</label>
+								</div>
+
+								<!--  		<div class="form-label-group">
+										<input type="text" id="concelho" name="concelho"
+											class="form-control" placeholder="Concelho" required>
+										<label for="concelho">Concelho</label>
+									</div>
+									-->
+								<div class="form-label-group">
+									<input type="tel" id="contacto" name="contact"
+										class="form-control" placeholder="Contacto" required>
+									<label for="contacto">Contacto</label>
+								</div>
+								<div class="form-label-group" >
+									<input type="date" id="birthday" name="birthday"
+										class="form-control text-center" placeholder="Birthday" required>
+									<label for="birthday">Data de Nascimento</label>
+								</div>
+								<div class="form-label-group">
+
+									<input class="form-control" list="datalistOptions"
+										id="exampleDataList" placeholder="Concelho" name="concelho" required>
+									<label for="exampleDataList" class="form-label">Concelho</label>
+									<datalist id="datalistOptions">
+										<#list concelhos as concelho>
+										<option value="${concelho.concelho_nome}">
+										</#list>
+
+									</datalist>
+
+								</div>
+								<#if userAlreadyExists??>
+									<p style='color: red'>${userAlreadyExists}</p>
+								</#if>
+
+								<div style="margin-bottom: 25px;">
+									<input type="checkbox" id="pro" name="pro" value="Profissional" />
+									<label class="form-check-label" for="pro" style="margin-top:15px"> Quero ser profissional </label>
+								</div>
+
+								<div>
+									<button type="submit" class="btn btn-dark btn-primary ">Sign
+										up</button>
+								</div>
+							</form>
+						</div>
+
+						<div class="card-footer text-muted text-size ">
+							<small class="text-muted"> <i> © 2021 Biskates -
+									Todos os direitos reservados</i>
+							</small>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>

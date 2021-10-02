@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+	<meta charset="utf-8">
+	<title>Consulta Anúncios</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="/styles/listas.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+	<!-- Optional JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+        });
+    </script>
+
+</head>
+
+<body style="background: #f5f6fa">
+
+	<div class="container align-items-center justify-content-between">
+		<nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark"
+			 style="height: 68px;">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="/perfil_detalhado/">
+					<img src=${user.fotoPerfil} alt="" width="50" height="50" class="d-inline-block align-top rounded-circle">
+					${user.nome}
+				</a>
+				<button class="navbar-toggler" type="button"
+						data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent" aria-expanded="false"
+						aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<#if user.modoConta==1>
+								<a class="nav-link active" aria-current="page" href="/perfil_cliente/">Home</a>
+							<#else>
+								<a class="nav-link active" aria-current="page" href="/perfil_profissional/">Home</a>
+							</#if>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/consulta_anuncios/">Anuncios</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/consulta_profissionais/">Profissionais</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/perfil_cliente/chat/">Chat</a>
+						</li>
+					</ul>
+					<a class="nav-link">
+						<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom"
+								data-content="
+										<div class='popover' role='tooltip'>
+											<h1 class='popover-header'>Notificações</h1>
+											<div class='popover-body'>
+												<#list notificaMensagens as msg>
+													<a href='/perfil_cliente/chat/?contacto=${msg.enviada_por}'> ${msg.tipo} <br>
+												</#list>
+												<#list notificaRespostas as rspt>
+													<a href='/anuncio/${rspt.responde_anuncio_id}/'> ${rspt.tipo} <br>
+												</#list>
+												<#list notificaAnuncios as anc>
+													<#if anc.anuncio_pessoa_id != user.pessoaID>
+														<a href='/anuncio/${anc.anuncio_id}/'> ${anc.tipo} <br>
+													</#if>
+												</#list>
+											</div>
+										</div>">
+							<i class="bi bi-bell" style="font-size: 25px"></i>
+							<span class="badge rounded-pill bg-light text-dark">${countNotificacoes}</span>
+							<span class="sr-only">notificações não lidas</span>
+						</button>
+					</a>
+					<a class="nav-link" href="/logout/">
+						<button class="btn btn-sm btn-outline-secondary" type="button" style="background-color: #f5f6fa">Logout</button>
+					</a>
+
+				</div>
+			</div>
+		</nav>
+	</div>
+
+<!-- Filtragem -->
+
+	<div class="container" style="padding: 60px">
+		<div class="row gutters">
+			<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+				<div class="card h-100">
+					<div class="card-header">
+
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<h3 class="mb-2 text-primary">Filtros</h3>
+						</div>
+					</div>
+					<div class="card-body">
+						<div class="account-settings">
+							<div class="user-profile">
+
+								<div class="user-avatar">
+									<button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" >Selecionar distrito<span class="caret"></span></button>
+									<ul class="dropdown-menu scrollable-menu" role="menu">
+										<#if filtroConcelho?? && filtroCategoria??>
+											<li><a href="/consulta_anuncios/categoria/${filtroCategoria}/">Todos</a></li>
+										<#elseif filtroConcelho??>
+											<li><a href="../../../..">Todos</a></li>
+										<#elseif filtroDistrito?? && filtroCategoria??>
+											<li><a href="/consulta_anuncios/categoria/${filtroCategoria}/">Todos</a></li>
+										<#elseif filtroDistrito??>
+											<li><a href="../..">Todos</a></li>
+										<#else>
+											<li><a href="">Todos</a></li>
+										</#if>
+										<#list distritos as distrito>
+											<#if filtroCategoria??>
+												<li value="${distrito.distrito_nome}"><a href="/consulta_anuncios/distrito/${distrito.distrito_nome}/categoria/${filtroCategoria}/">${distrito.distrito_nome}</a></li>
+											<#else>
+												<li value="${distrito.distrito_nome}"><a href="/consulta_anuncios/distrito/${distrito.distrito_nome}/">${distrito.distrito_nome}</a></li>
+											</#if>
+										</#list>
+									</div>
+
+
+								<div class="user-avatar">
+									<button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">Selecionar concelho
+										<span class="caret"></span></button>
+										<#if filtroDistrito??>
+											<ul class="dropdown-menu scrollable-menu" role="menu">
+												<#if filtroConcelho?? && filtroCategoria??>
+													<li><a href="/consulta_anuncios/distrito/${filtroDistrito}/categoria/${filtroCategoria}/">Todos</a></li>
+												<#elseif filtroConcelho??>
+													<li><a href="../..">Todos</a></li>
+												<#else>
+													<li><a href="">Todos</a></li>
+												</#if>
+												<#list concelhos as concelho>
+													<#if filtroCategoria??>
+														<li value="${concelho.concelho_nome}"><a href="/consulta_anuncios/distrito/${filtroDistrito}/concelho/${concelho.concelho_nome}/categoria/${filtroCategoria}/">${concelho.concelho_nome}</a></li>
+													<#else>
+														<li value="${concelho.concelho_nome}"><a href="/consulta_anuncios/distrito/${filtroDistrito}/concelho/${concelho.concelho_nome}/">${concelho.concelho_nome}</a></li>
+													</#if>
+												</#list>
+											</ul>
+										</#if>
+									</div>
+
+								<div class="user-avatar">
+									<button type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown">Selecionar categoria
+									<span class="caret"></span></button>
+									<ul class="dropdown-menu scrollable-menu" role="menu">
+										<#if filtroCategoria??>
+											<li><a href="../..">Todos</a></li>
+										<#else>
+											<li><a href="">Todos</a></li>
+										</#if>
+										<#list categorias as categoria>
+											<#if filtroConcelho??>
+												<li id="filtroCategoria2" value="${categoria.categoria_nome}"><a href="/consulta_anuncios/distrito/${filtroDistrito}/concelho/${filtroConcelho}/categoria/${categoria.categoria_nome}/">${categoria.categoria_nome}</a></li>
+											<#elseif filtroDistrito??>
+												<li id="filtroCategoria1" value="${categoria.categoria_nome}"><a href="/consulta_anuncios/distrito/${filtroDistrito}/categoria/${categoria.categoria_nome}/">${categoria.categoria_nome}</a></li>
+											<#else>
+												<li id="filtroCategoria3" value="${categoria.categoria_nome}"><a href="/consulta_anuncios/categoria/${categoria.categoria_nome}/">${categoria.categoria_nome}</a></li>
+											</#if>
+										</#list>
+									</ul>
+								</div>
+					</div>
+
+					<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+						<hr/>
+						<p class="mb-2 text"><#if filtroDistrito??><b> Distrito: </b> ${filtroDistrito} </#if> </p>
+						<p class="mb-2 text"><#if filtroConcelho??><b> Concelho: </b> ${filtroConcelho} </#if> </p>
+						<p class="mb-2 text"><#if filtroCategoria??><b> Categoria: </b> ${filtroCategoria} </#if></p>
+						<hr/>
+						<#if filtroDistrito?? || filtroConcelho?? || filtroCategoria??>
+						<a href="/consulta_anuncios/" class="btn btn-primary" name="update" type="button">Clear</a>
+						<#else>
+						<button class="btn btn-primary" name="update" type="button">Clear</button>
+						</#if>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Listagem -->
+	<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+		<div class="card h-100">
+			<div class="card-header">
+					<h3 class="mb-2 text-primary">Anúncios</h3>
+			</div>
+
+			<div class="card-body">
+						<#if anuncios??>
+							<#list anuncios as anuncio>
+								<a href="/anuncio/${anuncio.anuncio_id}/" style="color: black; text-decoration: none">
+									<div class="row">
+										<div class="col">
+										<img alt="" src="${anuncio.imagem}" width=250px;>
+										</div>
+										<div class="col">
+										<div class="d-flex w-90 justify-content-between">
+											<h5 class="mb-1">${anuncio.titulo}</h5>
+										</div>
+										<div class="d-flex w-90 justify-content-between">
+											<p>${anuncio.descricao}</p>
+										</div>
+											<#if anuncio.valor == 0>
+												<p class="text-right">Negociável</p>
+											<#else>
+												<p class="text-right">${anuncio.valor}€</p>
+											</#if>
+										<p class="text-right"><i class="bi bi-calendar"></i>${anuncio.data_hora?datetime.iso?string("yyyy-MM-dd")}</p>
+										<p class="text-right">${anuncio.categoria_nome} - ${anuncio.concelho_nome}</p>
+											</div>
+									</div>
+								</a>
+								<hr/>
+							</#list>
+						</#if>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

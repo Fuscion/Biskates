@@ -1,0 +1,168 @@
+:root {
+    --input-padding-x: 2rem;
+    --input-padding-y: .5rem;
+}
+
+	body {
+
+    font-family: 'Verdana';
+    background: #f5f6fa;
+}
+
+.card-signin {
+    border: 2rem;
+    border-radius: 0rem 0rem 0.5rem 0.5rem;
+    box-shadow: 1 1rem 2rem 0 rgba(0, 0, 0, 0.5);
+    background: #FFFFFF;
+}
+
+.card-signin .card-title {
+    margin-bottom: 2em;
+    font-weight: 300;
+    font-size: 5rem;
+
+}
+
+.card-img-top {
+    height: 300px;
+    width: 250px;
+    padding-top: 35px;
+    padding-bottom: 15px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+}
+
+.card-signin .card-body {
+
+    padding-bottom: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    text-align: center
+}
+
+
+.form-signin {
+    width: 100%;
+}
+
+
+.form-label-group {
+    position: relative;
+    margin-bottom: 1.2rem;
+
+}
+
+.form-label-group input {
+    height: auto;
+    border-radius: 2rem;
+    background: #F5F5F5
+
+}
+
+.form-label-group>input,
+.form-label-group>label {
+    padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+.form-label-group>label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+    /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+    color: transparent;
+}
+
+.form-label-group input::placeholder {
+    color: transparent;
+}
+.form-label-group input:not(:placeholder-shown) {
+    padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+    padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+    padding-top: calc(var(--input-padding-y) / 3);
+    padding-bottom: calc(var(--input-padding-y) / 3);
+    font-size: 9px;
+    color: #777;
+}
+.btn-dark{
+
+    background: #C0C0C0;
+    border: 2px solid #686868;
+    color: black;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
+    color: black;
+    background-color: #ffb84d;
+    border-color: #285e8e; /*set the color you want here*/
+}
+.text-size{
+    font-size: 10px;
+    text-align: right;
+}
+
+.nav-bar{
+    margin-top:15px;
+}
+
+.dropdown{
+    height: auto;
+    border-radius: 2rem;
+    background: #F5F5F5
+}
+
+.list-group{
+	
+    max-height: 250px;
+    margin-bottom: 20px;
+    overflow:auto;
+    text-align: left;
+   
+}
+
+
+.list-group-item {
+	text-align: left;
+	background-color: #F5F5F5;
+	border-radius: 0.2rem;
+	margin: 0.2px;
+	
+}
+
+input[type="file"] {
+    border-radius: 2rem;
+}
+
+.checkboxgroup {
+	display: inline-block;
+	text-align: center;
+}
+
+.checkboxgroup label {
+	display: block;
+}

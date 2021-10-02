@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+<meta charset="utf-8">
+<title>Editar Perfil</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/styles/perfil_detalhado.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+	<!-- Optional JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script>
+        $(function () {
+            $('[data-toggle="popover"]').popover({html: true})
+        });
+    </script>
+</head>
+
+<body style="background: #f5f6fa">
+		<div class="container align-items-center justify-content-between">
+			<nav class="navbar fixed-top navbar-expand-md navbar-dark bg-dark"
+				 style="height: 68px;">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="/perfil_detalhado/">
+						<img src=${user.fotoPerfil} alt="" width="50" height="50" class="d-inline-block align-top rounded-circle">
+						${user.nome}
+					</a>
+					<button class="navbar-toggler" type="button"
+							data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+							aria-controls="navbarSupportedContent" aria-expanded="false"
+							aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<#if user.modoConta==1>
+									<a class="nav-link active" aria-current="page" href="/perfil_cliente/">Home</a>
+								<#else>
+									<a class="nav-link active" aria-current="page" href="/perfil_profissional/">Home</a>
+								</#if>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/consulta_anuncios/">Anuncios</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/consulta_profissionais/">Profissionais</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/perfil_cliente/chat/">Chat</a>
+							</li>
+						</ul>
+						<a class="nav-link">
+							<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom"
+									data-content="
+                                    <div class='popover' role='tooltip'>
+                                        <h1 class='popover-header'>Notificações</h1>
+                                        <div class='popover-body'>
+                                            <#list notificaMensagens as msg>
+                                                <a href='/perfil_cliente/chat/?contacto=${msg.enviada_por}'> ${msg.tipo} <br>
+                                            </#list>
+                                            <#list notificaRespostas as rspt>
+                                                <a href='/anuncio/${rspt.responde_anuncio_id}/'> ${rspt.tipo} <br>
+                                            </#list>
+                                            <#list notificaAnuncios as anc>
+                                                <#if anc.anuncio_pessoa_id != user.pessoaID>
+                                                    <a href='/anuncio/${anc.anuncio_id}/'> ${anc.tipo} <br>
+                                                </#if>
+                                            </#list>
+                                        </div>
+                                    </div>">
+								<i class="bi bi-bell" style="font-size: 25px"></i>
+								<span class="badge rounded-pill bg-light text-dark">${countNotificacoes}</span>
+								<span class="sr-only">notificações não lidas</span>
+							</button>
+						</a>
+						<a class="nav-link" href="/logout/">
+							<button class="btn btn-sm btn-outline-secondary" type="button" style="background-color: #f5f6fa">Logout</button>
+						</a>
+
+					</div>
+				</div>
+			</nav>
+		</div>
+
+		<div class="container" style="padding: 60px">
+			<div class="row gutters">
+				<!-- INICIO BARRA EQUERDA -->
+				<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+					<div class="card h-100">
+						<div class="card-body">
+							<div class="card-heading">
+								<h4 class="card-title text-center" style="color: #007ae1;">Perfil Detalhado</h4>
+							</div>
+							<div class="account-settings">
+								<div class="user-profile">
+									<div class="user-avatar">
+										<img src=${user.fotoPerfil} class="user-profile-image rounded-circle" alt="" />
+									</div>
+									<h5 class="user-name">${user.nome}</h5>
+									<h6 class="user-email">${user.email}</h6>
+									<p class="text-center small">Avaliação</p>
+									<ul class="list-inline list-unstyled text-center">
+										<p>${user.avaliacaoMedia}</p>
+										<li><#assign x=user.avaliacaoMedia?round>
+											<#if x!=0>
+												<#list 1..x as i>
+													<span class="bi bi-star checked"></span>
+												</#list>
+										</#if>
+										<#if (user.avaliacaoMedia?round<5)>
+											<#assign x=user.avaliacaoMedia?round>
+												<#list x..4 as i>
+													<span class="bi bi-star"></span>
+												</#list>
+											</#if>
+										</li>
+									</ul>
+									<hr />
+								</div>
+								<div class="about">
+									<form method="POST" action="/perfil_detalhado/update/">
+										<h5>Sobre mim</h5>
+										<#if user.aboutMe??>
+											<textarea class="form-control"
+													  id="exampleFormControlTextarea1" rows="4"
+													  placeholder="Insira um sobre mim" name="aboutMe"
+													  style="background: #f5f6fa"  readonly>${user.aboutMe}</textarea >
+
+											<button class="btn btn-primary" id="alterar" name="alterar" type="submit"  style="margin-top : 15px" disabled>Alterar</button>
+										</#if>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- FIM BARRA EQUERDA -->
+
+				<!-- INICIO DETALHES -->
+				<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+					<div class="card h-100">
+							<div class="card-body">
+						<form method="POST" action="/perfil_detalhado/update/" onsubmit="return checkForm(this)">
+								<h5 class="mb-2 text-primary">Detalhes Pessoais</h5>
+								<button type="button" class="btn btn-primary mybutton" id="edit" name="edit"  onclick="myFunction()">Editar
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+										<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"></path>
+									</svg>
+								</button>
+								<div class="row gutters">
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="nomeCompleto">Nome Completo</label>
+											<input class="form-control" id="nomeCompleto" name="nomeCompleto" placeholder="Insira o seu nome completo" type="text" value="${user.nome}" readonly>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="email">Email</label>
+											<input class="form-control" id="email" name="email" placeholder="Insira o seu email" type="email" value="${user.email}" disabled>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="phone">Telemóvel</label>
+											<input class="form-control" id="phone" name="phone" placeholder="Insira o seu número de telemóvel" type="number" value="${user.contacto}" readonly>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="data_nascimento">Data Nascimento</label>
+											<input class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Data Nascimento" type="date" value="${user.dataNascimento}" disabled>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+										<div class="form-group">
+											<label for="Concelho">Concelho</label>
+											<input class="form-control" list="listarConcelho" id="Concelho" name="concelhoResi" placeholder="Insira o seu concelho de residência" type="name" value="${concelhoByID.concelho_nome}" readonly>
+											<#if erroConcelhoResi??><p style='color: red'>${erroConcelhoResi}</p></#if>
+											<datalist id="listarConcelho">
+												<#list concelhos as concelho><option value="${concelho.concelho_nome}"></#list>
+											</datalist>
+										</div>
+									</div>
+								</div>
+								<hr />
+
+
+								<#if user.tipoConta==2>
+								<h5 class="mb-2 text-primary">Detalhes de Profissional</h5>
+
+								<!-- CONCELHOS DO PROFISSIONAL -->
+								<label class="form-label"><u>Zona de Atuação:</u></label>
+								<div>
+									<datalist id="cc1">
+										<#list concelhos as concelho><option value="${concelho.concelho_nome}"></#list>
+									</datalist>
+									<#if erroConcelho??><p style='color: red'>${erroConcelho}</p></#if>
+									<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c1' placeholder='Escolha um concelho' name='c1' value="${concelhosPro[0].concelho_nome}"readonly>
+									<#if concelhosPro[1]??>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c2' placeholder='Escolha um concelho' name='c2' value="${concelhosPro[1].concelho_nome}"readonly>
+									<#else>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c2' placeholder='Escolha um concelho' name='c2' value=""readonly>
+									</#if>
+
+									<#if concelhosPro[2]??>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c3' placeholder='Escolha um concelho' name='c3' value="${concelhosPro[2].concelho_nome}"readonly>
+									<#else>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c3' placeholder='Escolha um concelho' name='c3' value=""readonly>
+									</#if>
+
+									<#if concelhosPro[3]??>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c4' placeholder='Escolha um concelho' name='c4' value="${concelhosPro[3].concelho_nome}"readonly>
+									<#else>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c4' placeholder='Escolha um concelho' name='c4' value=""readonly>
+									</#if>
+
+									<#if concelhosPro[4]??>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c5' placeholder='Escolha um concelho' name='c5' value="${concelhosPro[4].concelho_nome}"readonly>
+									<#else>
+										<input class='form-control' style='margin-bottom: 15px' list="cc1" id='c5' placeholder='Escolha um concelho' name='c5' value=""readonly>
+									</#if>
+									<!-- FIM CONCELHOS DO PROFISSIONAL -->
+
+									<!-- CATEGORIAS -->
+									<h6><u>Categorias:</u></h6>
+									<div id="list-example1" class="list-group">
+										<#list categorias as categoria>
+											<#list categoriasPro as categoriaPro>
+												<#if categoriaPro.categoria_id == categoria.categoria_id>
+													<label class="list-group-item">
+														<input class="form-check-input me-1" type="checkbox" name="categorias" value="${categoriaPro.categoria_nome}" disabled checked> ${categoriaPro.categoria_nome}
+													</label>
+												</#if>
+											</#list>
+										</#list>
+										<#list categoriasFalta as categoria>
+											<label class="list-group-item">
+												<input class="form-check-input me-1" type="checkbox" name="categorias" value="${categoria.categoria_nome}" disabled> ${categoria.categoria_nome}
+											</label>
+										</#list>
+										<#if erroCategoria??><p style='color: red'>${erroCategoria}</p></#if>
+									</div>
+									<!-- FIM CATEGORIAS -->
+									</#if>
+
+									<div class="row gutters">
+										<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+											<div class="text-right">
+												<button class="btn btn-primary" id="update" name="update" type="submit" disabled>Update</button>
+											</div>
+										</div>
+									</div>
+									<hr />
+							</form>
+							<#if user.tipoConta==1>
+								<#if ativar??>
+									<div class="card-body" >
+										<form method="post" action="/perfil_detalhado/ativar_profissional/"
+											  class="form-signin">
+
+											<h6>selecione as categorias :</h6>
+											<div id="list-example3" class="container">
+												<div  class="list-group">
+
+
+													<#list categorias as topic>
+														<label class="list-group-item">
+														<input class="form-check-input me-1" type="checkbox"
+															   name="categorias" value="${topic.categoria_nome}"> ${topic.categoria_nome}
+														</label>
+													</#list>
+												</div>
+											</div>
+
+											<h6>selecione até 5 concelhos :</h6>
+											<div id="list-example2" class="container">
+												<div  class="list-group" >
+
+													<#list concelhos as concelho>
+													<label class="list-group-item" >
+														<input class="form-check-input me-1 cbox" type="checkbox" name="concelhos"
+														value="${concelho.concelho_nome}" > ${concelho.concelho_nome}
+												</label>
+												</#list>
+												</div>
+											</div>
+												<#if error??>
+												<p style='color: red'>escolha pelo menos um concelho e uma categoria</p>
+											</#if>
+											<button name="upgrade" type="submit" class="btn btn-dark btn-primary"
+													value="Login">confirm</button>
+
+										</form>
+									</div>
+								<#else>
+									<form method="POST" action="/perfil_detalhado/ativar_profissional/">
+										<button class="btn btn-secondary" id="ativar" name="ativar" type="submit">Ativar modo profissional</button>
+									</form>
+									<hr/>
+								</#if>
+							</#if>
+								</div>
+
+							<!-- ALTERAR PASSWORD -->
+							<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+								<h5 class="mb-2 text-primary" style="padding-top: 10px">Alterar Password</h5>
+								<form method="POST" action="/perfil_detalhado/alterarPassword/" onsubmit="return checkForm(this)">
+									<p>Password Atual: <input type="password" name="pwd1"></p>
+									<p>Nova Password: <input type="password" name="pwd2"></p>
+									<p>Confirmar Password: <input type="password" name="pwd3"></p>
+									<#if ERRO??><p style="color: red">${ERRO}</p></#if>
+									<p><button class="btn btn-primary" id="submit" name="submit" type="submit">Alterar</button></p>
+								</form>
+							</div>
+							<!-- FIM ALTERAR PASSWORD -->
+
+						</div>
+					</div>
+					<!-- FIM DETALHES -->
+				</div>
+			</div>
+		</div>
+	</body>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script type="text/javascript"></script>
+<script>
+        $('#edit').click(function() {
+            $('#form').toggleClass('view');
+            $('input').each(function() {
+                var inp = $(this);
+                if (inp.attr('readonly')) {
+                    inp.removeAttr('readonly');
+                } else {
+                    inp.attr('readonly', 'readonly');
+                }
+            });
+
+            $('.form-check-input').each(function(){
+                if($(this).attr("disabled")){
+                    $(this).attr("disabled", false);
+                }
+                 else {
+                 $(this).attr("disabled", true);
+                   }
+            })
+
+            $('textarea').each(function() {
+                var inp = $(this);
+                if (inp.attr('readonly')) {
+                    inp.removeAttr('readonly');
+                } else {
+                    inp.attr('readonly', 'readonly');
+                }
+            });
+        });
+
+        function myFunction() {
+            var inp = document.getElementById("update");
+            var inp2 = document.getElementById("alterar");
+            if( !inp.disabled ){
+             inp.disabled = true;
+
+            }
+            else if( inp.disabled){
+                inp.disabled = false;
+                inp.disabled2 = false;
+            }
+
+            if( !inp2.disabled )
+                 inp2.disabled = true;
+
+            else if( inp2.disabled )
+                inp2.disabled = false;
+        }
+
+		$(document).ready(function() {
+
+			$(".cbox").on("click", function() {
+				var numberOfChecked = $('input.cbox:checkbox:checked').length;
+				if (numberOfChecked > 5) {
+					$(this).prop('checked', false);
+				}
+			});
+
+		});
+    </script>
+
+</html>

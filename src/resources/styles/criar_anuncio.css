@@ -1,0 +1,17 @@
+
+
+.nav-item {
+    font-size: 26px;
+}
+
+.popover-body{
+      color: black ;
+      font-size: 30px ;
+      max-width: 200px ;
+      padding: 10px;
+    }
+
+.popover{
+    padding: 5px !important;
+    margin-right: 150px ;
+}
